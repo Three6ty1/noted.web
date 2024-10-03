@@ -7,6 +7,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { HeaderComponent } from "./core/header/header.component";
+import { NotesService } from './core/notes/notes.service';
 
 @Component({
   selector: 'app-root',
@@ -16,52 +17,21 @@ import { HeaderComponent } from "./core/header/header.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  http = inject(HttpClient);
+  constructor(private notesService: NotesService, private http: HttpClient) {}
 
-  noteCreateForm = new FormGroup({
-    title: new FormControl<string>(''),
-    description: new FormControl<string>(''),
-    links: new FormControl<string>(''),
-    bookmarked: new FormControl<boolean>(false),
-  })
+  notes: Note[] = [];
 
-  // $ means observable
-  notes$ = this.getNotes();
-
-  onNoteCreateSubmit() {
-    console.log(this.noteCreateForm.value);
-    const _link = this.noteCreateForm.value.links;
-
-    const addNoteRequest = {
-      title: this.noteCreateForm.value.title,
-      description: this.noteCreateForm.value.description,
-      links: _link == null || _link === "" ? [] : _link.split(","),
-      bookmarked: this.noteCreateForm.value.bookmarked,
-    };
-
-    // Need to subscribe to the observable of the post
-    this.http.post(`${environment.DB_STRING}/api/Notes`, addNoteRequest)
-    .subscribe({
-      next: (value) => {
-        console.log(value);
-        this.notes$ = this.getNotes();
-        this.noteCreateForm.reset();
-      }
-    });
+  ngOnInit(): void {
+    this.notesService.updateNotes();
+    this.notesService.currentNotes.subscribe(n => this.notes = n);
   }
 
   onNoteDelete(id: string) {
     this.http.delete(`${environment.DB_STRING}/api/Notes/${id}`)
     .subscribe({
       next: () => {
-        this.notes$ = this.getNotes();
+        this.notesService.updateNotes();
       }
     })
-  }
-
-  private getNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>(`${environment.DB_STRING}/api/Notes`);
-    // Returns an observable that we need to subscribe to
-    // Whenver we call this we get the latest version of it
   }
 }

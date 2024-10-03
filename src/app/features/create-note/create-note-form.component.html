@@ -1,0 +1,18 @@
+<mat-dialog-content>
+  <form (ngSubmit)="onNoteCreateSubmit()" [formGroup]="noteCreateForm">
+    <h1>Create a new note</h1>
+    <div id="container">
+      <label for="title">Title</label>
+      <input type="text" formControlName="title">
+      <label for="description">Description</label>
+      <input type="text" formControlName="description">
+      <label for="links">Link</label>
+      <input type="text" formControlName="links">
+      <div>
+        <label for="bookmarked">Bookmark</label>
+        <input type="checkbox" formControlName="bookmarked">
+      </div>
+    </div>
+    <button type="submit">Submit it</button>
+  </form>
+</mat-dialog-content>

@@ -1,19 +1,10 @@
 <div id="container">
-  <div id="icons">
+  <div id="items">
     <div id="logo">
-      Logo
+      Three6ty1's Noted board
     </div>
-    <div>
-      Create
-    </div>
-    <div>
-      Delete
-    </div>
-    <div>
-      List
-    </div>
-    <div>
-      Info
-    </div>
+    <app-create-note></app-create-note>
+    <fa-icon [icon]="listIcon" matTooltip="Look at all the notes"/>
+    <fa-icon [icon]="infoIcon" matTooltip="What is this site?"/>
   </div>
 </div>
