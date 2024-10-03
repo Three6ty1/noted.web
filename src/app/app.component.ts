@@ -5,11 +5,13 @@ import { Observable } from 'rxjs';
 import { Note } from '../models/note.model';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { environment } from '../environments/environment';
+import { HeaderComponent } from "./core/header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AsyncPipe, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterOutlet, AsyncPipe, CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -28,16 +30,17 @@ export class AppComponent {
 
   onNoteCreateSubmit() {
     console.log(this.noteCreateForm.value);
+    const _link = this.noteCreateForm.value.links;
 
     const addNoteRequest = {
       title: this.noteCreateForm.value.title,
       description: this.noteCreateForm.value.description,
-      links: this.noteCreateForm.value.links?.split(","),
+      links: _link == null || _link === "" ? [] : _link.split(","),
       bookmarked: this.noteCreateForm.value.bookmarked,
     };
 
     // Need to subscribe to the observable of the post
-    this.http.post('https://localhost:7206/api/Notes', addNoteRequest)
+    this.http.post(`${environment.DB_STRING}/api/Notes`, addNoteRequest)
     .subscribe({
       next: (value) => {
         console.log(value);
@@ -48,7 +51,7 @@ export class AppComponent {
   }
 
   onNoteDelete(id: string) {
-    this.http.delete(`https://localhost:7206/api/Notes/${id}`)
+    this.http.delete(`${environment.DB_STRING}/api/Notes/${id}`)
     .subscribe({
       next: () => {
         this.notes$ = this.getNotes();
@@ -57,7 +60,7 @@ export class AppComponent {
   }
 
   private getNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>('https://localhost:7206/api/Notes');
+    return this.http.get<Note[]>(`${environment.DB_STRING}/api/Notes`);
     // Returns an observable that we need to subscribe to
     // Whenver we call this we get the latest version of it
   }

@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 @if (notes$ | async; as notes) {
   <!-- notes$ is a subscribable that is async, check if this has a value then assign to notes-->
   @if (notes.length > 0) {

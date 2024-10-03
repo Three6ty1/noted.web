@@ -1,0 +1,12 @@
+#container {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.2);
+    
+    #icons {
+        color: white;
+        display: flex;
+        flex-grow: 1;
+        gap: 10px;
+        justify-content: left;
+    }
+}
