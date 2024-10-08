@@ -1,0 +1,12 @@
+$size: 159px;
+
+:host {
+  display: inline-flex;
+  height: $size;
+  width: $size;
+}
+
+.note-container {
+  height: $size;
+  width: $size;
+}

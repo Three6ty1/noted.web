@@ -1,9 +1,9 @@
-<div (click)="openDialog()" class="note-container">
+<div (click)="openDialog(note)" class="note-container" [ngStyle]="{'background-color': random_color}">
   <div class="note-hero">
     <!-- title/image carousel -->
   </div>
   <div class="note-popup">
     <!-- If no image, then title here and hide this -->
-    <h3>Note title</h3>
+    <h3>{{note.title}}</h3>
   </div>
 </div>

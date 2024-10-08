@@ -8,11 +8,12 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { environment } from '../environments/environment';
 import { HeaderComponent } from "./core/header/header.component";
 import { NotesService } from './core/notes/notes.service';
+import { NoteComponent } from './app/components/note/note.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AsyncPipe, CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent],
+  imports: [RouterOutlet, AsyncPipe, CommonModule, FormsModule, ReactiveFormsModule, HeaderComponent, NoteComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

@@ -1,13 +1,13 @@
 <app-header></app-header>
 
+<div class="all-notes-container">
 @if (notes) {
   <!-- notes$ is a subscribable that is async, check if this has a value then assign to notes-->
   @if (notes.length > 0) {
-    <p *ngFor="let note of notes">
-      <span>note: {{note.title}}</span>
-    </p>
+    <app-note *ngFor="let note of notes" [note]="note"></app-note>
   } @else {
     <p>No existing notes</p>
   }
 }
+</div>
 <router-outlet />
