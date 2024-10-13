@@ -1,0 +1,42 @@
+<mat-dialog-content class="note-dialog-container">
+  @if (this.editing) {
+    <form (ngSubmit)="onNoteEditSubmit()" [formGroup]="noteEditForm">
+      <h1>Edit {{note.title}}</h1>
+      <p ng-if="error">{{error}}</p>
+      <div id="container">
+        <label for="title">Title</label>
+        <input type="text" formControlName="title">
+        <label for="description">Description</label>
+        <input type="text" formControlName="description">
+      </div>
+      <button type="submit">Submit changes</button>
+    </form>
+    <fa-icon [icon]="cancelIcon" (click)="changeMode()"></fa-icon>
+  } @else {
+    <div class="note-dialog-header">
+      <h3 class="note-dialog-title">
+        {{note.title}}
+      </h3>
+      <div class="note-dialog-info">
+        <!-- Date, last edited, bookmark button, edit button -->
+        <h4>Created: {{note.created}}</h4>
+        <h4>Edited: {{note.lastEdited}}</h4>
+        <h4>Bookmarked: {{note.bookmarked}}</h4>
+        <fa-icon [icon]="editIcon" (click)="changeMode()"></fa-icon>
+      </div>
+    </div>
+    
+    <div class="note-dialog-hero">
+      {{note.links}}
+    </div>
+
+    <div class="note-dialog-content">
+      {{note.description}}
+    </div>
+
+    <div class="note-dialog-footer">
+      <!-- Likes, like/unlike -->
+      Likes: {{note.likes}}
+    </div>
+  }
+</mat-dialog-content>

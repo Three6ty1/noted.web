@@ -13,7 +13,7 @@ export class NotesService {
   constructor(private http: HttpClient) {}
 
   currentNotes = this.notes.asObservable();
-
+  
   updateNotes() {
     this.http.get<Note[]>(`${environment.DB_STRING}/api/Notes`).subscribe(n =>
       this.notes.next(n)

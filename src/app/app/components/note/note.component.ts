@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { NoteDialogComponent } from '../note-dialog/note-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 import { Note } from '../../../../models/note.model';
 import { NgStyle } from '@angular/common';
+import { NoteDialogService } from '../../../core/note-dialog/note-dialog.service';
 @Component({
   selector: 'app-note',
   standalone: true,
@@ -14,14 +14,11 @@ import { NgStyle } from '@angular/common';
 export class NoteComponent {
   @Input() note!: Note;
 
-  readonly dialog = inject(MatDialog);
   random_color: string = '#'+(0x1000000+Math.random()*0xffffff).toString(16).substring(1,7);
 
-  openDialog(note: Note) {
-    const dialogRef = this.dialog.open(NoteDialogComponent, {
-      data: { note: note },
-    });
+  constructor (private noteDialogService: NoteDialogService) {}
 
-    dialogRef.afterClosed();
+  openDialog(note: Note) {
+    this.noteDialogService.openDialog(note);
   }
 }
