@@ -6,7 +6,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { NotesService } from '../../core/notes/notes.service';
-import { faPenToSquare, faCircleXmark, faCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCircleXmark, faCircleLeft, faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-note-dialog',
@@ -23,6 +24,8 @@ export class NoteDialogComponent {
   error: string;
   editIcon = faPenToSquare;
   cancelIcon = faCircleLeft;
+  isBookmarkedIcon = solidBookmark;
+  notBookmarkedIcon = emptyBookmark;
 
   constructor (@Inject(MAT_DIALOG_DATA) public data: {note: Note, editing: boolean}, private http: HttpClient, private noteService: NotesService) {
     this.note = data.note;
@@ -59,5 +62,14 @@ export class NoteDialogComponent {
         this.error = err.message;
       },
     });
+  }
+
+  onBookmark(toBookmark: boolean) {
+    this.http.put(`${environment.DB_STRING}/api/Notes/Bookmark/${this.note.id}`, {bookmarked: toBookmark})
+    .subscribe({
+      next: () => {
+        this.note = {...this.note, bookmarked: toBookmark}
+      }
+    })
   }
 }

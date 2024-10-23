@@ -37,6 +37,13 @@
     <div class="note-dialog-footer">
       <!-- Likes, like/unlike -->
       Likes: {{note.likes}}
+
+      @if (note.bookmarked) {
+        <fa-icon [icon]="isBookmarkedIcon" (click)="onBookmark(false)"></fa-icon>
+      } @else {
+        <fa-icon [icon]="notBookmarkedIcon" (click)="onBookmark(true)"></fa-icon>
+      }
+      
     </div>
   }
 </mat-dialog-content>
