@@ -4,7 +4,14 @@
 @if (notes) {
   <!-- notes$ is a subscribable that is async, check if this has a value then assign to notes-->
   @if (notes.length > 0) {
-    <app-note *ngFor="let note of notes" [note]="note"></app-note>
+    @for (note of notes; track $index) {
+      @if (note != null) {
+        <app-note [note]="note"></app-note>
+      } @else {
+        <app-empty-note></app-empty-note>
+      }
+    }
+    
   } @else {
     <p>No existing notes</p>
   }

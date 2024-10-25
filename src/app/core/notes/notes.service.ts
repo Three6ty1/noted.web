@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class NotesService {
-  notes = new BehaviorSubject<Note[]>([]);
+  notes = new BehaviorSubject<(Note | null)[]>([]);
 
   constructor(private http: HttpClient) {}
 
@@ -17,6 +17,7 @@ export class NotesService {
   updateNotes() {
     this.http.get<Note[]>(`${environment.DB_STRING}/api/Notes`).subscribe(n =>
       this.notes.next(n)
+      // this.notes.next([null, null, null, null, null, null, ...n])
     );
   }
 }

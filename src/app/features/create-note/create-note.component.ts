@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faNoteSticky } from '@fortawesome/free-solid-svg-icons';
@@ -19,21 +19,22 @@ import { NotesService } from '../../core/notes/notes.service';
 export class CreateNoteFormComponent {
   constructor(private http: HttpClient, private notesService: NotesService) {}
 
+  links = inject(FormBuilder);
+
   noteCreateForm = new FormGroup({
     title: new FormControl<string>(''),
     description: new FormControl<string>(''),
-    links: new FormControl<string>(''),
+    additionalLinks: this.links.array<string>(['']),
     bookmarked: new FormControl<boolean>(false),
   })
 
   onNoteCreateSubmit() {
     console.log(this.noteCreateForm.value);
-    const _link = this.noteCreateForm.value.links;
 
     const addNoteRequest = {
       title: this.noteCreateForm.value.title,
       description: this.noteCreateForm.value.description,
-      links: _link == null || _link === "" ? [] : _link.split(","),
+      links: this.noteCreateForm.value.additionalLinks,
       bookmarked: this.noteCreateForm.value.bookmarked,
     };
 
@@ -46,6 +47,18 @@ export class CreateNoteFormComponent {
         this.noteCreateForm.reset();
       }
     });
+  }
+
+  get additionalLinks() {
+    return this.noteCreateForm.get('additionalLinks') as FormArray;
+  }
+
+  removeLink(index: number) {
+    this.additionalLinks.removeAt(index);
+  }
+
+  addLink() {
+    this.additionalLinks.push(this.links.control(''));
   }
 }
 

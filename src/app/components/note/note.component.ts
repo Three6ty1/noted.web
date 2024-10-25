@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { Note } from '../../../../models/note.model';
+import { Note } from '../../../models/note.model';
 import { NgStyle } from '@angular/common';
-import { NoteDialogService } from '../../../core/note-dialog/note-dialog.service';
+import { NoteDialogService } from '../../core/note-dialog/note-dialog.service';
 @Component({
   selector: 'app-note',
   standalone: true,

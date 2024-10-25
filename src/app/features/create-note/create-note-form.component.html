@@ -6,8 +6,21 @@
       <input type="text" formControlName="title">
       <label for="description">Description</label>
       <input type="text" formControlName="description">
-      <label for="links">Link</label>
-      <input type="text" formControlName="links">
+      <p>Links</p>
+      <div formArrayName="additionalLinks">
+        @for (link of additionalLinks.controls; track $index) {
+          <div>
+            <label for="additionalLinks">Link</label>
+            <input
+              type="url"
+              name="additionalLinks"
+              [formControlName]="$index"
+            >
+            <button type="button" (click)="removeLink($index)">Remove</button>
+          </div>
+        }
+        <button type="button" (click)="addLink()">Add</button>
+      </div>
       <div>
         <label for="bookmarked">Bookmark</label>
         <input type="checkbox" formControlName="bookmarked">
