@@ -1,20 +1,23 @@
 <app-header></app-header>
 
-<div class="all-notes-container">
-@if (notes) {
-  <!-- notes$ is a subscribable that is async, check if this has a value then assign to notes-->
-  @if (notes.length > 0) {
-    @for (note of notes; track $index) {
-      @if (note != null) {
-        <app-note [note]="note"></app-note>
+<div class="viewport">
+  <div class="all-notes-container" #allNotesContainer>
+    @if (notes) {
+      <!-- notes$ is a subscribable that is async, check if this has a value then assign to notes-->
+      @if (notes.length > 0) {
+        @for (note of notes; track $index) {
+          @if (note != null) {
+            <app-note [note]="note"></app-note>
+          } @else {
+            <app-empty-note></app-empty-note>
+          }
+        }
+        
       } @else {
-        <app-empty-note></app-empty-note>
+        <p>No existing notes</p>
       }
     }
-    
-  } @else {
-    <p>No existing notes</p>
-  }
-}
+  </div>
 </div>
+
 <router-outlet />

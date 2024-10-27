@@ -1,4 +1,4 @@
-<div (click)="openDialog(note)" class="note-container" [ngStyle]="{'background-color': random_color}">
+<div (click)="this.openDialog($event, note)" class="note-container" [ngStyle]="{'background-color': random_color}">
   <div class="note-hero">
     <!-- title/image carousel -->
   </div>

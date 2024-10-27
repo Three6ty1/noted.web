@@ -1,8 +1,9 @@
 #container {
-    // position: absolute;
-    background-color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    background-color: rgba(202, 22, 22, 0.486);
     border-radius: 10px;
     width: fit-content;
+    z-index: 50;
     
     #items {
         color: black;

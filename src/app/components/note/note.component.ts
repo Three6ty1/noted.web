@@ -18,7 +18,7 @@ export class NoteComponent {
 
   constructor (private noteDialogService: NoteDialogService) {}
 
-  openDialog(note: Note) {
+  openDialog(e: MouseEvent, note: Note) {
     this.noteDialogService.openDialog(note);
   }
 }
