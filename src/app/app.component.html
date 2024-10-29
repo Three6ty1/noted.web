@@ -5,12 +5,16 @@
     @if (notes) {
       <!-- notes$ is a subscribable that is async, check if this has a value then assign to notes-->
       @if (notes.length > 0) {
-        @for (note of notes; track $index) {
-          @if (note != null) {
-            <app-note [note]="note"></app-note>
-          } @else {
-            <app-empty-note></app-empty-note>
+        @for (notesRow of notes; track $index) {
+          <div class="notes-row" [id]="$index">
+          @for (note of notesRow; track $index) {
+            @if (note != null) {
+              <app-note [note]="note"></app-note>
+            } @else {
+              <app-empty-note></app-empty-note>
+            }
           }
+          </div>
         }
         
       } @else {

@@ -10,6 +10,7 @@ import { HeaderComponent } from "./core/header/header.component";
 import { NotesService } from './core/notes/notes.service';
 import { NoteComponent } from './components/note/note.component';
 import { EmptyNoteComponent } from "./components/empty-note/empty-note.component";
+import { NoteDialogService } from './core/note-dialog/note-dialog.service';
 
 type DragType = {
   element: HTMLDivElement | null,
@@ -26,7 +27,7 @@ type DragType = {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private notesService: NotesService, private http: HttpClient) {}
+  constructor(private notesService: NotesService, private http: HttpClient, private noteDialogService: NoteDialogService) {}
   
   @ViewChild('allNotesContainer') pannable!: ElementRef<HTMLDivElement>;
 
@@ -34,7 +35,7 @@ export class AppComponent {
     this.drag.element = this.pannable.nativeElement;
   }
 
-  notes: (Note | null)[] = [];
+  notes: (Note | null)[][] = [];
   
   // Panning
   // https://stackoverflow.com/a/22187471
@@ -53,6 +54,7 @@ export class AppComponent {
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(e: MouseEvent) {
     if (this.drag.state && this.drag.element) {
+      console.log("Dragging");
       // current mouse position - old mouse position drag
       this.delta.x = e.pageX - this.drag.x;
       this.delta.y = e.pageY - this.drag.y;
@@ -79,8 +81,6 @@ export class AppComponent {
       this.drag.y = e.pageY;
       this.drag.state = true;
     }
-
-    return false
   }
 
   @HostListener('document:mouseup', ['$event'])
