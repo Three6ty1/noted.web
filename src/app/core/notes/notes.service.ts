@@ -8,7 +8,6 @@ function spiral(notes: Note[]) {
   var n = Math.ceil(Math.sqrt(notes.length))
   var newNotes: (Note | null)[][] = Array.from(Array(n), _ => Array(n).fill(null));
 
-
   var top = 0
   var left = 0
   var down = n - 1
@@ -16,9 +15,6 @@ function spiral(notes: Note[]) {
   
   var totalSpaces = Math.pow(n, 2) - 1;
   var actual = notes.length - 1;
-  
-  
-  console.log(actual)
 
   while (totalSpaces >= 0 && left <= right && top <= down) {
     for (var i = right; i >= left; i--) {
@@ -72,7 +68,7 @@ export class NotesService {
   
   updateNotes() {
     this.http.get<Note[]>(`${environment.DB_STRING}/api/Notes`).subscribe(notes => {
-      console.log(notes)
+      console.log("Update notes")
       var newNotes = spiral(notes);
       this.notes.next(newNotes)
     });

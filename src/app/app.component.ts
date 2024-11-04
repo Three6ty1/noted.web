@@ -11,6 +11,7 @@ import { NotesService } from './core/notes/notes.service';
 import { NoteComponent } from './components/note/note.component';
 import { EmptyNoteComponent } from "./components/empty-note/empty-note.component";
 import { NoteDialogService } from './core/note-dialog/note-dialog.service';
+import { AuthService } from './core/auth/auth.service';
 
 type DragType = {
   element: HTMLDivElement | null,
@@ -27,9 +28,16 @@ type DragType = {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private notesService: NotesService, private http: HttpClient, private noteDialogService: NoteDialogService) {}
+  constructor(private notesService: NotesService, private http: HttpClient, private noteDialogService: NoteDialogService, private authService: AuthService) {}
   
   @ViewChild('allNotesContainer') pannable!: ElementRef<HTMLDivElement>;
+
+  ngOnInit(): void {
+    this.notesService.updateNotes();
+    this.notesService.currentNotes.subscribe(n => this.notes = n);
+
+    this.authService.login();
+  }
 
   ngAfterViewInit() {
     this.drag.element = this.pannable.nativeElement;
@@ -88,11 +96,6 @@ export class AppComponent {
     if (this.drag.state) {
       this.drag.state = false
     }
-  }
-
-  ngOnInit(): void {
-    this.notesService.updateNotes();
-    this.notesService.currentNotes.subscribe(n => this.notes = n);
   }
 
   onNoteDelete(id: string) {
