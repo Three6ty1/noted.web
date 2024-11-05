@@ -35,7 +35,7 @@ export class AppComponent {
   ngOnInit(): void {
     this.notesService.updateNotes();
     this.notesService.currentNotes.subscribe(n => this.notes = n);
-
+    this.authService.initUser();
     this.authService.login();
   }
 
