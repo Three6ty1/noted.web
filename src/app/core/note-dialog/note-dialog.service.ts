@@ -5,7 +5,7 @@ import { Note } from '../../../models/note.model';
 import { MatDialog } from '@angular/material/dialog';
 import { NoteDialogComponent } from '../../features/note-dialog/note-dialog.component';
 
-const tempNote: Note = {id: "x", title: "None", description: "None", likes: 0, lastEdited: new DatePipe('en-US'), created: new DatePipe('en-US'), links: [], bookmarked: false}
+const tempNote: Note = {id: "x", title: "None", description: "None", likes: [], lastEdited: new DatePipe('en-US'), created: new DatePipe('en-US'), links: [], bookmarked: false}
 
 @Injectable({
   providedIn: 'root'

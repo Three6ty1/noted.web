@@ -6,8 +6,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { NotesService } from '../../core/notes/notes.service';
-import { faPenToSquare, faCircleXmark, faCircleLeft, faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
-import { faBookmark as emptyBookmark } from '@fortawesome/free-regular-svg-icons';
+import { faPenToSquare, faCircleXmark, faCircleLeft, faBookmark as solidBookmark, faThumbsUp as solidThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as emptyBookmark, faThumbsUp as emptyThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { AuthService, User } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-note-dialog',
@@ -26,8 +27,11 @@ export class NoteDialogComponent {
   cancelIcon = faCircleLeft;
   isBookmarkedIcon = solidBookmark;
   notBookmarkedIcon = emptyBookmark;
+  isLikedIcon = solidThumbsUp;
+  notLikedIcon = emptyThumbsUp;
+  user: (User | null) = null;
 
-  constructor (@Inject(MAT_DIALOG_DATA) public data: {note: Note, editing: boolean}, private http: HttpClient, private noteService: NotesService) {
+  constructor (@Inject(MAT_DIALOG_DATA) public data: {note: Note, editing: boolean}, private http: HttpClient, private noteService: NotesService, private authService: AuthService) {
     this.note = data.note;
     this.editing = false;
     this.noteEditForm = new FormGroup({
@@ -35,6 +39,10 @@ export class NoteDialogComponent {
       description: new FormControl<string>(data.note.description),
     })
     this.error = "";
+  }
+
+  ngOnInit() {
+    this.authService.loggedUser.subscribe(user => this.user = user);
   }
 
   changeMode() {
@@ -64,11 +72,24 @@ export class NoteDialogComponent {
     });
   }
 
-  onBookmark(toBookmark: boolean) {
-    this.http.put(`${environment.DB_STRING}/api/Notes/Bookmark/${this.note.id}`, {bookmarked: toBookmark})
+  onBookmark(toSet: boolean) {
+    this.http.put(`${environment.DB_STRING}/api/Notes/Bookmark/${this.note.id}`, {toSet: toSet})
     .subscribe({
       next: () => {
-        this.note = {...this.note, bookmarked: toBookmark}
+        this.note["bookmarked"] = toSet;
+      }
+    })
+  }
+
+  onLike(toSet: boolean) {
+    this.http.put(`${environment.DB_STRING}/api/Notes/Like/${this.note.id}`, {toSet: toSet})
+    .subscribe({
+      next: () => {
+        if (toSet) {
+          this.note["likes"] = [...this.note.likes, this.user!.subject]
+        } else {
+          this.note["likes"] = this.note["likes"].filter(sub => sub != this.user!.subject);
+        }
       }
     })
   }

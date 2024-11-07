@@ -4,7 +4,7 @@ export interface Note {
     id: string;
     title: string;
     description: string;
-    likes: number;
+    likes: string[];
     created: DatePipe;
     lastEdited:  DatePipe;
     links: string[];

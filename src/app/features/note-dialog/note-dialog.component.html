@@ -36,12 +36,29 @@
 
     <div class="note-dialog-footer">
       <!-- Likes, like/unlike -->
-      Likes: {{note.likes}}
+      <!-- If user is not logged in disabled and add a tooltip to login? redirect to login modal?-->
+      <div>
+        @if (user) {
+          @if (note.likes.includes(user.subject)) {
+            <fa-icon [icon]="isLikedIcon" (click)="onLike(false)"></fa-icon>
+          } @else {
+            <fa-icon [icon]="notLikedIcon" (click)="onLike(true)"></fa-icon>
+          }
+        } @else {
+          <fa-icon aria-disabled="true" [icon]="notLikedIcon"></fa-icon>
+        }
+  
+        Likes: {{note.likes.length}}
+      </div>
 
-      @if (note.bookmarked) {
-        <fa-icon [icon]="isBookmarkedIcon" (click)="onBookmark(false)"></fa-icon>
+      @if (user) {
+        @if (note.bookmarked) {
+          <fa-icon [icon]="isBookmarkedIcon" (click)="onBookmark(false)"></fa-icon>
+        } @else {
+          <fa-icon [icon]="notBookmarkedIcon" (click)="onBookmark(true)"></fa-icon>
+        }
       } @else {
-        <fa-icon [icon]="notBookmarkedIcon" (click)="onBookmark(true)"></fa-icon>
+        <fa-icon aria-disabled="true" [icon]="notBookmarkedIcon"></fa-icon>
       }
       
     </div>
